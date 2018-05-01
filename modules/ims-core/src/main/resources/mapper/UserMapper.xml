@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向DAO接口 -->
+<mapper namespace="com.spark.ims.core.mapper.UserMapper">
+    <select id="find" resultType="com.spark.ims.core.domain.UserInfo">
+        select t.*,o.name as orgName,d.name as deptName
+        from sys_user t
+        LEFT JOIN sys_org o on t.org_id=o.id
+        LEFT JOIN sys_dept d on t.dept_id=d.id
+        where t.account=#{account} and t.status='1'
+    </select>
+</mapper>

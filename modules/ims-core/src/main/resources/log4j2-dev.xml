@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+	<!-- 控制台输出日志 错误信息 -->
+	<Appenders>
+		<!--<Console name="CONSOLE" target="SYSTEM_OUT">-->
+			  <!--<PatternLayout pattern="%m%n"/>-->
+		<!--</Console>-->
+
+		<!--日志异步到数据库 -->
+		<JDBC name="DB" tableName="sys_logger">
+			<!--日志异步到数据库 -->
+			<ConnectionFactory class="com.spark.ims.core.config.ConnectionFactory"
+				method="getDatabaseConnection"/>
+			<Column name="id" isUnicode="false" pattern="%X{id}" />
+			<Column name="principal_id" isUnicode="false" pattern="%X{principalId}" />
+			<Column name="principal_type" isUnicode="false" pattern="%X{principalType}" />
+			<Column name="level" isUnicode="false" pattern="%level" />
+
+			<Column name="created_time" isUnicode="false" pattern="%X{createTime}" />
+			<Column name="message" isUnicode="false" pattern="%message" />
+			<Column name="user_id" isUnicode="false" pattern="%X{userId}" />
+			<Column name="used_time" isUnicode="false" pattern="%X{usedTime}" />
+			<Column name="evt" isUnicode="false" pattern="%X{event}" />
+			<Column name="type" isUnicode="false" pattern="%X{type}" />
+			<Column name="ip" isUnicode="false" pattern="%X{ip}" />
+			<Column name="operate_object" isUnicode="false" pattern="%X{operateObject}"/>
+		</JDBC>
+
+		<RollingFile name="FILE" fileName="logs/ims.log"
+			filePattern="logs/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz">
+			<PatternLayout
+				pattern="%d{yyyy.MM.dd 'at' HH:mm:ss z} %-5level %class{36} %L %M - %msg%xEx%n" />
+			<SizeBasedTriggeringPolicy size="500 MB" />
+		</RollingFile>
+
+	</Appenders>
+
+    <loggers>
+	    <!-- 操作日志  -->
+	    <logger name="db" level="info">
+	    	<appender-ref ref="DB"/>
+	    </logger>
+	    <!--<logger name="console" level="all">-->
+	    	<!--<appender-ref ref="CONSOLE"/>-->
+	    <!--</logger>-->
+	    <logger name="file" level="info">
+	    	<appender-ref ref="FILE"/>
+	    </logger>
+    </loggers>
+</configuration>
