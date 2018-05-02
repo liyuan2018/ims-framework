@@ -2,7 +2,7 @@ package com.spark.ims.web.config;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.boot.context.embedded.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.filter.GenericFilterBean;
 import com.spark.ims.web.session.ImsSessionManager;

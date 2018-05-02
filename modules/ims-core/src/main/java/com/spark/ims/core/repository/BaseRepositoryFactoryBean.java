@@ -27,9 +27,9 @@ public class BaseRepositoryFactoryBean<R extends JpaRepository<T, I>, T,
 
     private SessionFactory sessionFactory;
 
-    public BaseRepositoryFactoryBean(Class<? extends R> repositoryInterface, SessionFactory sessionFactory) {
-        super(repositoryInterface);
-        this.sessionFactory = sessionFactory;
+    @Autowired
+    public BaseRepositoryFactoryBean(EntityManagerFactory entityManagerFactory) {
+        this.sessionFactory = entityManagerFactory.unwrap(SessionFactory.class);
     }
 
     protected RepositoryFactorySupport createRepositoryFactory(EntityManager em) {
@@ -49,10 +49,22 @@ public class BaseRepositoryFactoryBean<R extends JpaRepository<T, I>, T,
         }
 
         protected Object getTargetRepository(RepositoryMetadata metadata) {
+//            if(BaseRelationJpaRepository.class.isAssignableFrom(metadata.getRepositoryInterface())){
+//                return new BaseJpaRelationRepositoryImpl<T, I>((Class<T>) metadata.getDomainType(), em);
+//            }
+//            else {
+//                return new BaseJpaRepositoryImpl<T, I>((Class<T>) metadata.getDomainType(), em);
+//            }
             return new BaseJpaRepositoryImpl<T, I>((Class<T>) metadata.getDomainType(), em, sessionFactory);
         }
 
         protected Class<?> getRepositoryBaseClass(RepositoryMetadata metadata) {
+//            if(BaseRelationJpaRepository.class.isAssignableFrom(metadata.getRepositoryInterface())){
+//                return BaseJpaRelationRepositoryImpl.class;
+//            }
+//            else {
+//                return BaseJpaRepositoryImpl.class;
+//            }
             return BaseJpaRepositoryImpl.class;
         }
     }
